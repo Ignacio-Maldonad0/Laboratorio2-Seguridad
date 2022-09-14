@@ -37,7 +37,7 @@ def traductor_mensaje(clave,mensajel,accion):
 
 
 mensaje = input("Ingrese su mensaje a codificar: ")
-clavecodi = input("Ingrese su clave para codificar: ")
+clavecodi = "finisterrae"
 accion = '1' 
 
 if accion=='1':
@@ -52,7 +52,7 @@ elif accion=='2':
 #cifrado en rot
 
 mensajel= list(traducido)
-rot = int(input("Ingrese cuantas veces aplicara el rot: "))
+rot = 10
 abcdario = ['a','b','c','d','e','f','g','h','i','j','k','l','m',
             'n','o','p','q','r','s','t','u','v','w','x','y','z']
 
@@ -113,6 +113,4 @@ file2= open ("Mensaje seguro.txt","w")
 file2.write(my_hash.hexdigest())
 file2.close()
 print("Su mensaje ha sido asegurado y guardado en el archivo .txt con nombre de:\n Mensaje Seguro")
-
-
 

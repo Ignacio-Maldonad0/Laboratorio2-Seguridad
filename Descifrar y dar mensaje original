@@ -1,1 +1,111 @@
-xd
+import os
+import hashlib
+import sys
+
+mensajeo = "laboratorio numero dos"
+mencifrado = "bsyhteipssd dmkwtr rpt"
+menhash = "7ee16b908d54d3194ecc00680abf3fcfa3f545310a4c8c539d843c8fd592c942"
+
+#comprobar
+
+comprobador = input("Ingrese su clave hash, para comprobar si el archivo a sido modificado o no: ")
+if comprobador == menhash:
+    print("el hash es correcto, su mensaje cifrado es: ", mencifrado)
+    mensajefinal = input("inserte su mensaje cifrado para proceder a su descifrado: ") 
+else:
+    sys.exit("el hash ingresado no es igual, su mensaje a sido modificado")
+
+print("El mensaje a sido cifrado en vigenere y rot(10), al descifrarlo su mensaje dice: ")
+
+#descifrarlo en rot
+mensajel= list(mensajefinal)
+rot = -10
+abcdario = ['a','b','c','d','e','f','g','h','i','j','k','l','m',
+            'n','o','p','q','r','s','t','u','v','w','x','y','z']
+
+abcdario2 = ['z','y','x','w','v','u','t','s','r','q','p','o','n',
+            'm','l','k','j','i','h','g','f','e','d','c','b','a']
+
+mensajecifrado = []
+
+resto = 0
+i = 0
+c = len(mensajel)
+while i < c:
+    if rot > 0:
+        if mensajel[i] == " ":
+            mensajecifrado.append(" ")
+
+        else:   
+            posicion = abcdario.index(mensajel[i])
+            posicionr = posicion + rot
+            if posicionr > 25:
+                posicionr = posicionr % 25
+                menci = posicionr  
+            else:
+                menci = posicion + rot
+            mensajecifrado.append(abcdario[menci])
+
+    if rot < 0:
+        rot2 = rot * -1
+        if mensajel[i] == " ":
+            mensajecifrado.append(" ")
+        else:   
+            posicion = abcdario2.index(mensajel[i])
+            posicionr = posicion + rot2
+            if posicionr > 25:
+                posicionr = posicionr % 25
+                menci = posicionr
+            else:
+                menci = posicion + rot2
+            mensajecifrado.append(abcdario2[menci])
+    i+=1
+    posicionr = 0  
+    resto = 0
+
+mensajecifradof=''.join(mensajecifrado)
+
+#descifrarlo en vigenere
+
+abcdario = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+def cifrar_mensaje(clave,mensajel):
+    return traductor_mensaje(clave,mensajel,'1')
+
+def descifrar_mensaje(clave,mensajel):
+    return traductor_mensaje(clave,mensajel,'2')
+
+def traductor_mensaje(clave,mensajel,accion):
+    traducido=[]
+    indice_clave=0
+    clave=clave.upper()
+
+    for symbol in mensajel:
+        num = abcdario.find(symbol.upper())
+        if num!=-1:
+            if accion=='1':
+                num+=abcdario.find(clave[indice_clave])
+            elif accion=='2':
+                num-=abcdario.find(clave[indice_clave])
+            num%=len(abcdario)
+            if symbol.isupper():
+                traducido.append(abcdario[num])
+            elif symbol.islower():
+                traducido.append(abcdario[num].lower())
+            indice_clave+=1
+            if indice_clave==len(clave):
+                indice_clave=0
+
+        else:
+            traducido.append(symbol)
+    return ('').join(traducido)
+
+
+mensaje = mensajecifradof
+clavecodi = "finisterrae"
+accion = '2' 
+
+if accion=='1':
+    traducido=cifrar_mensaje(clavecodi,mensaje)
+elif accion=='2':
+    traducido=descifrar_mensaje(clavecodi,mensaje)
+    print(traducido)

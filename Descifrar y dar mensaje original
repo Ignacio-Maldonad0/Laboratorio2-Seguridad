@@ -1,25 +1,58 @@
 import os
 import hashlib
-import sys
 
-mensajeo = "laboratorio numero dos"
-mencifrado = "bsyhteipssd dmkwtr rpt"
-menhash = "7ee16b908d54d3194ecc00680abf3fcfa3f545310a4c8c539d843c8fd592c942"
+#cifrarlo en vigenere
+print("Su mensaje para hacerlo seguro sera cifrado en vigenere\n y rot de la forma en que usted elija \n")
+abcdario = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+def cifrar_mensaje(clave,mensajel):
+    return traductor_mensaje(clave,mensajel,'1')
 
-#comprobar
+def descifrar_mensaje(clave,mensajel):
+    return traductor_mensaje(clave,mensajel,'2')
 
-comprobador = input("Ingrese su clave hash, para comprobar si el archivo a sido modificado o no: ")
-if comprobador == menhash:
-    print("el hash es correcto, su mensaje cifrado es: ", mencifrado)
-    mensajefinal = input("inserte su mensaje cifrado para proceder a su descifrado: ") 
-else:
-    sys.exit("el hash ingresado no es igual, su mensaje a sido modificado")
+def traductor_mensaje(clave,mensajel,accion):
+    traducido=[]
+    indice_clave=0
+    clave=clave.upper()
 
-print("El mensaje a sido cifrado en vigenere y rot(10), al descifrarlo su mensaje dice: ")
+    for symbol in mensajel:
+        num = abcdario.find(symbol.upper())
+        if num!=-1:
+            if accion=='1':
+                num+=abcdario.find(clave[indice_clave])
+            elif accion=='2':
+                num-=abcdario.find(clave[indice_clave])
+            num%=len(abcdario)
+            if symbol.isupper():
+                traducido.append(abcdario[num])
+            elif symbol.islower():
+                traducido.append(abcdario[num].lower())
+            indice_clave+=1
+            if indice_clave==len(clave):
+                indice_clave=0
 
-#descifrarlo en rot
-mensajel= list(mensajefinal)
-rot = -10
+        else:
+            traducido.append(symbol)
+    return ('').join(traducido)
+
+
+mensaje = input("Ingrese su mensaje a codificar: ")
+clavecodi = "finisterrae"
+accion = '1' 
+
+if accion=='1':
+    traducido=cifrar_mensaje(clavecodi,mensaje)
+elif accion=='2':
+    traducido=descifrar_mensaje(clavecodi,mensaje)
+    print(traducido)
+
+
+
+
+#cifrado en rot
+
+mensajel= list(traducido)
+rot = 10
 abcdario = ['a','b','c','d','e','f','g','h','i','j','k','l','m',
             'n','o','p','q','r','s','t','u','v','w','x','y','z']
 
@@ -64,48 +97,20 @@ while i < c:
     resto = 0
 
 mensajecifradof=''.join(mensajecifrado)
-
-#descifrarlo en vigenere
-
-abcdario = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-def cifrar_mensaje(clave,mensajel):
-    return traductor_mensaje(clave,mensajel,'1')
-
-def descifrar_mensaje(clave,mensajel):
-    return traductor_mensaje(clave,mensajel,'2')
-
-def traductor_mensaje(clave,mensajel,accion):
-    traducido=[]
-    indice_clave=0
-    clave=clave.upper()
-
-    for symbol in mensajel:
-        num = abcdario.find(symbol.upper())
-        if num!=-1:
-            if accion=='1':
-                num+=abcdario.find(clave[indice_clave])
-            elif accion=='2':
-                num-=abcdario.find(clave[indice_clave])
-            num%=len(abcdario)
-            if symbol.isupper():
-                traducido.append(abcdario[num])
-            elif symbol.islower():
-                traducido.append(abcdario[num].lower())
-            indice_clave+=1
-            if indice_clave==len(clave):
-                indice_clave=0
-
-        else:
-            traducido.append(symbol)
-    return ('').join(traducido)
+#crear archivo
+file1= open ("Mensaje de entrada.txt","w")
+file1.write(mensajecifradof)
+file1.close()
 
 
-mensaje = mensajecifradof
-clavecodi = "finisterrae"
-accion = '2' 
+#crear funcion hash
+archivo = open("Mensaje de entrada.txt","r")
+linea = archivo.readline()
+archivo.close()
 
-if accion=='1':
-    traducido=cifrar_mensaje(clavecodi,mensaje)
-elif accion=='2':
-    traducido=descifrar_mensaje(clavecodi,mensaje)
-    print(traducido)
+my_hash = hashlib.sha256(linea.encode('utf-8'))
+file2= open ("Mensaje seguro.txt","w")
+file2.write(my_hash.hexdigest())
+file2.close()
+print("Su mensaje ha sido asegurado y guardado en el archivo .txt con nombre de:\n Mensaje Seguro")
+

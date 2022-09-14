@@ -2,7 +2,7 @@ import os
 import hashlib
 
 #cifrarlo en vigenere
-print("Su mensaje para hacerlo seguro sera cifrado en vigenere\n y rot de la forma en que usted elija \n")
+print("Su mensaje para hacerlo seguro sera cifrado en vigenere\n y rot \n")
 abcdario = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 def cifrar_mensaje(clave,mensajel):
     return traductor_mensaje(clave,mensajel,'1')

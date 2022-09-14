@@ -2,31 +2,31 @@ import os
 import hashlib
 
 #cifrarlo en vigenere
-print("Su mensaje para hacerlo seguro sera cifrado en vigenere\n y rot \n")
-abcdario = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-def cifrar_mensaje(clave,mensajel):
-    return traductor_mensaje(clave,mensajel,'1')
+print("Su mensaje para hacerlo seguro sera cifrado en vigenere y tendra una funcion hash \n")
 
-def descifrar_mensaje(clave,mensajel):
-    return traductor_mensaje(clave,mensajel,'2')
+def cifrar_mensaje(clave,mensa):
+    return traductor_mensaje(clave,mensa,'1')
 
-def traductor_mensaje(clave,mensajel,accion):
+def descifrar_mensaje(clave,mensa):
+    return traductor_mensaje(clave,mensa,'2')
+
+def traductor_mensaje(clave,mensa,accion):
     traducido=[]
     indice_clave=0
     clave=clave.upper()
 
-    for symbol in mensajel:
-        num = abcdario.find(symbol.upper())
+    for symbol in mensa:
+        num=LETRAS.find(symbol.upper())
         if num!=-1:
             if accion=='1':
-                num+=abcdario.find(clave[indice_clave])
+                num+=LETRAS.find(clave[indice_clave])
             elif accion=='2':
-                num-=abcdario.find(clave[indice_clave])
-            num%=len(abcdario)
+                num-=LETRAS.find(clave[indice_clave])
+            num%=len(LETRAS)
             if symbol.isupper():
-                traducido.append(abcdario[num])
+                traducido.append(LETRAS[num])
             elif symbol.islower():
-                traducido.append(abcdario[num].lower())
+                traducido.append(LETRAS[num].lower())
             indice_clave+=1
             if indice_clave==len(clave):
                 indice_clave=0
@@ -35,73 +35,21 @@ def traductor_mensaje(clave,mensajel,accion):
             traducido.append(symbol)
     return ('').join(traducido)
 
+LETRAS = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
-mensaje = input("Ingrese su mensaje a codificar: ")
-clavecodi = "finisterrae"
-accion = '1' 
+mensaje=input("Mensaje: ")
+myKey="finisterrae"
+accion = '1'
 
 if accion=='1':
-    traducido=cifrar_mensaje(clavecodi,mensaje)
+    traducido = cifrar_mensaje(myKey,mensaje)
 elif accion=='2':
-    traducido=descifrar_mensaje(clavecodi,mensaje)
-    print(traducido)
+    traducido = descifrar_mensaje(myKey,mensaje)
 
-
-
-
-#cifrado en rot
-
-mensajel= list(traducido)
-rot = 10
-abcdario = ['a','b','c','d','e','f','g','h','i','j','k','l','m',
-            'n','o','p','q','r','s','t','u','v','w','x','y','z']
-
-abcdario2 = ['z','y','x','w','v','u','t','s','r','q','p','o','n',
-            'm','l','k','j','i','h','g','f','e','d','c','b','a']
-
-mensajecifrado = []
-
-resto = 0
-i = 0
-c = len(mensajel)
-while i < c:
-    if rot > 0:
-        if mensajel[i] == " ":
-            mensajecifrado.append(" ")
-
-        else:   
-            posicion = abcdario.index(mensajel[i])
-            posicionr = posicion + rot
-            if posicionr > 25:
-                posicionr = posicionr % 25
-                menci = posicionr  
-            else:
-                menci = posicion + rot
-            mensajecifrado.append(abcdario[menci])
-
-    if rot < 0:
-        rot2 = rot * -1
-        if mensajel[i] == " ":
-            mensajecifrado.append(" ")
-        else:   
-            posicion = abcdario2.index(mensajel[i])
-            posicionr = posicion + rot2
-            if posicionr > 25:
-                posicionr = posicionr % 25
-                menci = posicionr
-            else:
-                menci = posicion + rot2
-            mensajecifrado.append(abcdario2[menci])
-    i+=1
-    posicionr = 0  
-    resto = 0
-
-mensajecifradof=''.join(mensajecifrado)
 #crear archivo
 file1= open ("Mensaje de entrada.txt","w")
-file1.write(mensajecifradof)
+file1.write(traducido)
 file1.close()
-
 
 #crear funcion hash
 archivo = open("Mensaje de entrada.txt","r")

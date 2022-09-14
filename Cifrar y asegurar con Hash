@@ -113,3 +113,6 @@ file2= open ("Mensaje seguro.txt","w")
 file2.write(my_hash.hexdigest())
 file2.close()
 print("Su mensaje ha sido asegurado y guardado en el archivo .txt con nombre de:\n Mensaje Seguro")
+
+
+
